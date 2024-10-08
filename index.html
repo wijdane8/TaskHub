@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Dots:wght@400..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
     <style>
         body{
-            background-color: rgb(223, 201, 210);
+            background-color: rgb(223, 201, 211);
             font-family: "Roboto", sans-serif;
             font-weight: 700;
             font-style: normal;
@@ -23,6 +23,7 @@
             width: 70%;
             text-align: center;
             background-color: rgb(255, 255, 255);
+            border-radius: 5px;
             
         }
         .main{
@@ -51,8 +52,9 @@
             padding:5px 15px;
             align-items: center;
             margin: 2%;
-            border: 1px solid rgba(73, 73, 73, 0.39);
+            border: 1px solid rgba(119, 0, 255, 0.893);
             border-radius: 5px;
+            text-align: start;
         }
         .task:hover{
             box-shadow: 0px 3px 5px rgba(168,168,168,0.38);
@@ -63,17 +65,16 @@
             font-weight: 400;
             font-style: normal;
             padding-left: 0;
-            margin-left: -40px;
         }
         
     </style>
 </head>
 <body>
     <div class="main">
-        <div class="table">
-            <div class="tasks" style="background-color:rgb(191, 105, 199);padding: 15px;">
-                <button class="round-btn" style="float: left;background-color: rgb(254, 254, 254);">
-                    <span class="material-symbols-outlined" style="line-height: 1.5;">
+        <div class="table" id="tasks">
+            <div class="tasks" style="background-color:rgb(210, 168, 214);padding: 15px;border-radius: 5px;">
+                <button class="round-btn" id="add" style="float: left;background-color: rgb(254, 254, 254);">
+                    <span class="material-symbols-outlined"  style="line-height: 1.5;">
                         add
                     </span>
                 </button>
@@ -91,12 +92,12 @@
                         </span>
                     </div>
                     <div class="buttons">
-                        <button class="round-btn" style="background-color: rgb(185, 214, 160);">
+                        <button class="round-btn" style="background-color:ghostwhite;">
                             <span class="material-symbols-outlined">
                                 done_outline
                             </span>
                         </button>
-                        <button class="round-btn" style="background-color: rgb(205, 181, 219);">
+                        <button class="round-btn" style="background-color: rgb(219, 216, 181);">
                             <span class="material-symbols-outlined">
                                 edit
                             </span>
@@ -108,8 +109,76 @@
                         </button>
                     </div>
                 </div>
+                
                
         </div>
     </div>
 </body>
+<script>
+    let tasks=[
+        {
+            "title":"Read book",
+            "date":"17-10-2024",
+            "isDone":true,
+        },
+        {
+            "title":"Finish React Course",
+            "date":"22-10-2024",
+            "isDone":false,
+        },
+        {
+            "title":"Go to circuse",
+            "date":"10-10-2024",
+            "isDone":false,
+        },
+    ]
+    var bgColor= "ghostwhite";
+    function CheckIsDone(isDone){
+        if (isDone==true){
+                return "darkseagreen"
+            }else if(task.isDone==false){
+                return "ghostwhite"
+            }
+    }
+    function updateTask(tasks){
+        var context=''
+        for (task of tasks){
+            context+=`<div class="task"><div class="task-info" style="padding: 0;line-height: 0;">
+                <h2>${task.title}</h2>
+                <span class="material-symbols-outlined" style="display: inline-block;">
+                    event
+                    </span>
+                    <span style="padding-bottom: 2px;">
+                        ${task.date}
+                        </span>
+                        </div>
+                        <div class="buttons">
+                            <button class="round-btn" style="background-color:${CheckIsDone(task.isDone)};">
+                                <span class="material-symbols-outlined">
+                                    done_outline
+                                    </span>
+                                    </button>
+                                    <button class="round-btn" style="background-color: rgb(219, 216, 181);">
+                                        <span class="material-symbols-outlined">
+                                            edit
+                                            </span>
+                                            </button>
+                                            <button class="round-btn" style="background-color: rgb(234, 184, 184);">
+                                                <span class="material-symbols-outlined">
+                                                    delete
+                                                    </span>
+                                                    </button>
+                                                    </div></div>`
+                                                    console.log(context,tasks);
+                                                }
+                                                document.getElementById("tasks").innerHTML+=context
+                                            }
+    document.getElementById('add').addEventListener('click',function(){
+        newTask={"title":"new Task","date":"28/02/2025","isDone":false};
+        console.log(newTask);
+        tasks.unshift(newTask);
+        updateTask(newTask);
+    });
+    updateTask(tasks)
+    </script>
 </html>
