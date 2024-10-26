@@ -106,12 +106,23 @@
             "isDone":false,
         },
     ]
+    
+    function getTaskFromStorage(){
+        retrivedTasks=JSON.parse(localStorage.getItem('Tasks'));
+        Tasks=retrivedTasks??[]//to give tasks empty array if the tasks are null
+    }
+    getTaskFromStorage()
+    function storeTasks(){
+        let tasksString=JSON.stringify(Tasks);
+        localStorage.setItem('Tasks',tasksString);
+    }
+    storeTasks()
     var bgColor= "ghostwhite";
     function CheckIsDone(isDone){
         if (isDone==true){
-            return "darkseagreen"
+            return "rgb(49, 147, 52)"
         }else if(isDone==false){
-            return "ghostwhite"
+            return "silver"
         }
     }
     function updateTasks(){
@@ -132,15 +143,15 @@
                     <div class="buttons">
                         <button class="round-btn" style="background-color:${CheckIsDone(task.isDone)};" onClick="done(${index})">
                             <span class="material-symbols-outlined">
-                                done_outline
+                                ${task.isDone ?`check`:`close`}
                             </span>
                         </button>
-                        <button class="round-btn" style="background-color: rgb(219, 216, 181);" onClick="editTask(${index})">
+                        <button class="round-btn" style="background-color: lightblue;" onClick="editTask(${index})">
                             <span class="material-symbols-outlined">
                                 edit
                             </span>
                         </button>
-                        <button class="round-btn" style="background-color: rgb(234, 184, 184);" onClick="deletTask(${index})">
+                        <button class="round-btn" style="background-color: crimson;" onClick="deletTask(${index})">
                             <span class="material-symbols-outlined">
                                 delete
                             </span>
@@ -152,16 +163,8 @@
             }
         }
     function done(index){
-        if(Tasks[index].isDone==true){
-            if(confirm("Are you sure you want to mark this task [ "+Tasks[index].title+" ] as unDone?")==true){
-                Tasks[index].isDone=false;
-                
-            }
-        }else if(Tasks[index].isDone==false){
-            if(confirm("Are you sure you want to mark this task[ "+Tasks[index].title+" ] as Done?")==true){
-                Tasks[index].isDone=true;
-            }
-        }
+        Tasks[index].isDone=!Tasks[index].isDone;
+        storeTasks()
         updateTasks();
         console.log(Tasks)
     }
@@ -171,6 +174,7 @@
         if(newTaskTitle!=null && newTaskDate!=null){
             Tasks[index].title=newTaskTitle;
             Tasks[index].date=newTaskDate;
+            storeTasks()
             updateTasks();
         }
     }
@@ -179,15 +183,17 @@
         if (isConfirm==true){
             Tasks.splice(index, 1);
             alert("Task deleted.")
+            storeTasks()
             updateTasks();
         }
     }
     function addTask(){
         taskOBJ=prompt("Enter your task:");
         taskDate=new Date()
-        if(newTaskTitle!=null){
+        if(taskOBJ!=null){
         newTask={"title":taskOBJ,"date":taskDate.getDate()+"-"+(taskDate.getMonth()+1)+"-"+taskDate.getFullYear(),"isDone":false};
         Tasks.push(newTask);
+        storeTasks()
     }
         updateTasks();
     };
