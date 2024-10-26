@@ -24,6 +24,7 @@
             text-align: center;
             background-color: rgb(255, 255, 255);
             border-radius: 5px;
+            margin-bottom: 50px;
             
         }
         .main{
@@ -71,114 +72,126 @@
 </head>
 <body>
     <div class="main">
-        <div class="table" id="tasks">
+        <div class="table">
             <div class="tasks" style="background-color:rgb(210, 168, 214);padding: 15px;border-radius: 5px;">
-                <button class="round-btn" id="add" style="float: left;background-color: rgb(254, 254, 254);">
+                <button class="round-btn" id="add" style="float: left;background-color: rgb(254, 254, 254);" onclick="addTask()">
                     <span class="material-symbols-outlined"  style="line-height: 1.5;">
                         add
                     </span>
                 </button>
-                <h1 style="display: inline;" >My Tasks</h1>
+                <h1 style="display: inline;"> My Tasks</h1>
                 
                 </div>
-                <div class="task">
-                    <div class="task-info" style="padding: 0;line-height: 0;">
-                        <h2>Task one</h2>
-                        <span class="material-symbols-outlined" style="display: inline-block;">
-                            event
-                        </span>
-                        <span style="padding-bottom: 2px;">
-                            11/11/2020
-                        </span>
-                    </div>
-                    <div class="buttons">
-                        <button class="round-btn" style="background-color:ghostwhite;">
-                            <span class="material-symbols-outlined">
-                                done_outline
-                            </span>
-                        </button>
-                        <button class="round-btn" style="background-color: rgb(219, 216, 181);">
-                            <span class="material-symbols-outlined">
-                                edit
-                            </span>
-                        </button>
-                        <button class="round-btn" style="background-color: rgb(234, 184, 184);">
-                            <span class="material-symbols-outlined">
-                                delete
-                            </span>
-                        </button>
-                    </div>
-                </div>
+                <div class="tasks" id="tasks"></div>
                 
                
         </div>
     </div>
 </body>
 <script>
-    let tasks=[
+    let Tasks=[
         {
             "title":"Read book",
-            "date":"17-10-2024",
+            "date":'17-10-2024',
             "isDone":true,
         },
         {
             "title":"Finish React Course",
-            "date":"22-10-2024",
+            "date":'22-10-2024',
             "isDone":false,
         },
         {
             "title":"Go to circuse",
-            "date":"10-10-2024",
+            "date":'10-10-2024',
             "isDone":false,
         },
     ]
     var bgColor= "ghostwhite";
     function CheckIsDone(isDone){
         if (isDone==true){
-                return "darkseagreen"
-            }else if(task.isDone==false){
-                return "ghostwhite"
-            }
+            return "darkseagreen"
+        }else if(isDone==false){
+            return "ghostwhite"
+        }
     }
-    function updateTask(tasks){
-        var context=''
-        for (task of tasks){
-            context+=`<div class="task"><div class="task-info" style="padding: 0;line-height: 0;">
-                <h2>${task.title}</h2>
-                <span class="material-symbols-outlined" style="display: inline-block;">
-                    event
-                    </span>
-                    <span style="padding-bottom: 2px;">
-                        ${task.date}
+    function updateTasks(){
+        document.getElementById("tasks").innerHTML=''
+        let index=0
+        let context=''
+        for (task of Tasks){
+            context=`<div class="task">
+                    <div class="task-info" style="padding: 0;line-height: 0;">
+                        <h2>${task.title}</h2>
+                        <span class="material-symbols-outlined" style="display: inline-block;">
+                        event
                         </span>
-                        </div>
-                        <div class="buttons">
-                            <button class="round-btn" style="background-color:${CheckIsDone(task.isDone)};">
-                                <span class="material-symbols-outlined">
-                                    done_outline
-                                    </span>
-                                    </button>
-                                    <button class="round-btn" style="background-color: rgb(219, 216, 181);">
-                                        <span class="material-symbols-outlined">
-                                            edit
-                                            </span>
-                                            </button>
-                                            <button class="round-btn" style="background-color: rgb(234, 184, 184);">
-                                                <span class="material-symbols-outlined">
-                                                    delete
-                                                    </span>
-                                                    </button>
-                                                    </div></div>`
-                                                    console.log(context,tasks);
-                                                }
-                                                document.getElementById("tasks").innerHTML+=context
-                                            }
-    document.getElementById('add').addEventListener('click',function(){
-        newTask={"title":"new Task","date":"28/02/2025","isDone":false};
-        console.log(newTask);
-        tasks.unshift(newTask);
-        updateTask(newTask);
-    });
-    updateTask(tasks)
+                        <span style="padding-bottom: 2px;">
+                            ${task.date}
+                        </span>
+                    </div>
+                    <div class="buttons">
+                        <button class="round-btn" style="background-color:${CheckIsDone(task.isDone)};" onClick="done(${index})">
+                            <span class="material-symbols-outlined">
+                                done_outline
+                            </span>
+                        </button>
+                        <button class="round-btn" style="background-color: rgb(219, 216, 181);" onClick="editTask(${index})">
+                            <span class="material-symbols-outlined">
+                                edit
+                            </span>
+                        </button>
+                        <button class="round-btn" style="background-color: rgb(234, 184, 184);" onClick="deletTask(${index})">
+                            <span class="material-symbols-outlined">
+                                delete
+                            </span>
+                        </button>
+                    </div>
+                </div>`
+                index++
+                document.getElementById("tasks").innerHTML+=context
+            }
+        }
+    function done(index){
+        if(Tasks[index].isDone==true){
+            if(confirm("Are you sure you want to mark this task [ "+Tasks[index].title+" ] as unDone?")==true){
+                Tasks[index].isDone=false;
+                
+            }
+        }else if(Tasks[index].isDone==false){
+            if(confirm("Are you sure you want to mark this task[ "+Tasks[index].title+" ] as Done?")==true){
+                Tasks[index].isDone=true;
+            }
+        }
+        updateTasks();
+        console.log(Tasks)
+    }
+    function editTask(index){
+        let newTaskTitle=prompt("Enter new task title:",Tasks[index].title);
+        let newTaskDate=prompt("Enter new task date:",Tasks[index].date);
+        if(newTaskTitle!=null && newTaskDate!=null){
+            Tasks[index].title=newTaskTitle;
+            Tasks[index].date=newTaskDate;
+            updateTasks();
+        }
+    }
+    function deletTask(index){
+        let isConfirm=confirm('Are you sure you want to delete this task [ '+Tasks[index].title+' ]?')
+        if (isConfirm==true){
+            Tasks.splice(index, 1);
+            alert("Task deleted.")
+            updateTasks();
+        }
+    }
+    function addTask(){
+        taskOBJ=prompt("Enter your task:");
+        taskDate=new Date()
+        if(newTaskTitle!=null){
+        newTask={"title":taskOBJ,"date":taskDate.getDate()+"-"+(taskDate.getMonth()+1)+"-"+taskDate.getFullYear(),"isDone":false};
+        Tasks.push(newTask);
+    }
+        updateTasks();
+    };
+    console.log(Tasks)
+    updateTasks();
     </script>
 </html>
